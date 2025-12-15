@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Bento Grid | UMT Food Science</title>
+    <title>Sharul | UMT Sciens Agrotecnology</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <style>
         /* CSS Reset and Global Styles */
@@ -13,7 +13,7 @@
             --color-light-grey: #f0f4f8; /* Soft background */
             --color-medium-grey: #e2e8f0; /* Card borders/dividers */
             --color-dark-grey: #334155; /* Text/primary */
-            --color-accent: #007bff; /* Subtle blue accent (e.g., UMT blue) */
+            --color-accent: #004d99; /* Deep Ocean Blue (New Accent Color) */
             --color-text-light: #64748b; /* Secondary text */
             
             /* Typography */
@@ -62,7 +62,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            overflow: hidden; /* Ensures content respects border radius */
+            overflow: hidden; 
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
@@ -89,8 +89,6 @@
             font-weight: 700;
         }
         
-        /* Specific Card Styles */
-        
         /* Card 1: Profile (Large) */
         .card-profile {
             grid-area: profile;
@@ -104,8 +102,15 @@
             color: var(--color-accent);
         }
 
-        .profile-details {
+        .profile-tagline {
             font-size: 1.1rem;
+            color: var(--color-dark-grey);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-details {
+            font-size: 1rem;
             color: var(--color-dark-grey);
             margin-bottom: 1.5rem;
         }
@@ -153,12 +158,7 @@
             font-weight: 500;
         }
         
-        /* Card 4: Case Study (Medium) */
-        .card-case-study {
-            grid-area: case;
-        }
-
-        /* Card 5: Hobby (Small) */
+        /* Card 5: Hobby (Small) - Using accent color for visual pop */
         .card-hobby {
             grid-area: hobby;
             background-color: var(--color-accent);
@@ -166,15 +166,11 @@
             border-color: var(--color-accent);
         }
         
-        .card-hobby .card-header, .card-hobby .card-content {
+        .card-hobby .card-header, .card-hobby .card-content, .card-hobby strong {
             color: var(--color-white);
         }
         
         /* Card 6: Playlist (Wide/Bottom) */
-        .card-playlist {
-            grid-area: playlist;
-        }
-        
         .music-placeholder {
             height: 80px;
             background-color: var(--color-light-grey);
@@ -193,87 +189,30 @@
             .bento-container {
                 /* 4-column layout */
                 grid-template-columns: repeat(4, 1fr);
-                grid-template-rows: auto auto; /* Two main rows for the content above the wide card */
                 
-                /* Defining Grid Areas for Specific Cards (Bento Style) */
+                /* Defining Grid Areas: 
+                   profile (2x2) | tech (1x1) | case (1x2)
+                   profile (2x2) | location (1x1)| hobby (1x1)
+                   playlist (4x1)
+                */
                 grid-template-areas:
                     "profile profile tech case"
-                    "profile profile hobby case"
+                    "profile profile location hobby"
                     "playlist playlist playlist playlist";
             }
             
-            /* Card Size Definitions */
-            .card-profile {
-                /* Large Box: Takes up 2 columns and 2 rows */
-                grid-column: 1 / span 2;
-                grid-row: 1 / span 2;
-            }
-
-            .card-tech-stack {
-                /* Medium Box: 1 column, 1 row (Top right) */
-                grid-column: 3 / span 1;
-                grid-row: 1 / span 1;
-            }
+            /* Card Size Definitions via Grid Areas/Spanning */
+            .card-profile { grid-area: profile; }
+            .card-tech-stack { grid-area: tech; }
+            .card-location { grid-area: location; }
+            .card-hobby { grid-area: hobby; }
+            .card-playlist { grid-area: playlist; }
             
             .card-case-study {
-                /* Medium Box: 1 column, 2 rows (Far right) */
-                grid-column: 4 / span 1;
-                grid-row: 1 / span 2;
+                 grid-area: case; 
+                 /* Explicitly spans 2 rows based on the area layout */
+                 grid-row: 1 / span 2; 
             }
-            
-            .card-location {
-                /* Small Box: 1 column, 1 row (Explicitly defined below) */
-                /* The area placement handles the size in this design */
-                grid-column: 3 / span 1;
-                grid-row: 2 / span 1;
-                /* Note: In the area definition above, 'tech' and 'location' occupy the same row 2, col 3 slot.
-                   We need to adjust the areas or explicitly place Card 2.
-                   Let's redefine the areas slightly for simplicity and better control.
-                   
-                   NEW AREA DEFINITION (more common for this layout):
-                   "profile profile tech tech"
-                   "profile profile location hobby"
-                   "playlist playlist playlist playlist"
-                   This gives Card 3 (Tech) medium size and Card 4 (Case Study) medium size.
-                */
-                
-                /* Let's stick to the original plan and use the explicit grid areas */
-                /* Card 2 (Location) will fit in the remaining small slot */
-                grid-area: location; /* Placed in row 2, col 3 */
-            }
-
-            .card-hobby {
-                /* Small Box: 1 column, 1 row */
-                grid-column: 4 / span 1; /* This is wrong based on the area def */
-                grid-area: hobby; /* Placed in row 2, col 4 */
-            }
-            
-            .card-playlist {
-                /* Wide Box: Takes up all 4 columns at the bottom */
-                grid-column: 1 / -1;
-            }
-            
-            /* Re-examining the original simple area definition:
-               "profile profile tech case"
-               "profile profile location hobby" <--- Case study needs to span 2 rows
-               "playlist playlist playlist playlist"
-               
-               Corrected area for Card 4 (Case Study) to span two rows:
-               grid-area: case / span 2;  <-- We use explicit grid props for spanning
-            */
-
-            .card-case-study {
-                 grid-area: case; /* Defined area in the template */
-                 grid-row: 1 / span 2; /* Explicitly spans 2 rows */
-            }
-            
-            /* The simple area template:
-               "profile profile tech case"
-               "profile profile location hobby"
-               "playlist playlist playlist playlist"
-               
-               With the case study span, this is the intended layout.
-            */
         }
         
         @media (min-width: 1024px) {
@@ -296,10 +235,11 @@
         
         <div class="bento-card card-profile">
             <div>
-                <p class="profile-name">AYESHA BINTI AZMAN</p>
+                <p class="profile-name">SHARUL</p>
+                <p class="profile-tagline accent-text">'Innovating tecnology agro.'</p>
                 <p class="profile-details">
-                    <strong class="accent-text">B.Sc. Food Science & Technology</strong> <br>
-                    Year <span class="accent-text">3</span>, Semester 6
+                    <strong class="accent-text">B.Sc. Sciens Agrotecnology</strong> <br>
+                    Year <span class="accent-text">1</span>
                 </p>
             </div>
             <div class="social-links">
@@ -312,51 +252,51 @@
         
         <div class="bento-card card-location">
             <p class="card-content">
-                <strong>UMT Campus</strong>, Kuala Terengganu
+                <strong>UMT</strong>, Kuala Nerus
             </p>
             <p class="location-time">
-                10:08 AM
+                10:44 AM
             </p>
         </div>
         
         <div class="bento-card card-tech-stack">
-            <p class="card-header">Current Focus</p>
+            <p class="card-header">Current Subjects</p>
             <ul class="subject-list">
-                <li>Food Chemistry ($\text{FKF 3105}$)</li>
-                <li>Food Microbiology ($\text{FMF 3206}$)</li>
-                <li>Sensory Evaluation</li>
-                <li>Statistical Methods</li>
+                <li>Food Chemistry</li>
+                <li>Microbiology</li>
+                <li>Data Analysis (Excel)</li>
+                <li>Lab Analysis Techniques</li>
             </ul>
         </div>
         
         <div class="bento-card card-case-study">
-            <p class="card-header">Latest Research</p>
+            <p class="card-header">Latest Lab Work</p>
             <p class="card-content">
-                <strong>Experiment Title:</strong> <span class="accent-text">Evaluation of Carotenoid Stability in Microalgae Oil During Thermal Processing</span>
+                <strong>Experiment Title:</strong> <span class="accent-text">Starch Gelatinization in Local Kuih</span>
             </p>
             <p class="card-content" style="margin-top: 1rem;">
-                <strong>Abstract:</strong> Investigating the kinetic degradation of $\beta$-carotene and $\alpha$-carotene in refined oil under high-heat conditions relevant to industrial frying. Preliminary findings suggest a first-order decay model ($C_t = C_0 e^{-kt}$) is applicable.
+                <strong>Description:</strong> Analyzing texture profiles of *Kuih Lapis* samples prepared with different starch ratios to optimize chewiness and structural integrity. Focus on the rheological properties post-gelatinization.
             </p>
             <div style="flex-grow: 1;"></div>
         </div>
         
         <div class="bento-card card-hobby">
-            <p class="card-header">Campus Life</p>
+            <p class="card-header">Unwind</p>
             <p class="card-content">
-                <strong>Activity:</strong> <span class="accent-text">Volunteering for the 'Ocean Cleanup' Initiative</span>
+                <strong>Activity:</strong> <span class="accent-text">Evening walks at Pantai UMT</span>
             </p>
             <p class="card-content">
-                Next Session: December 20th.
+                (A must for ocean inspiration!)
             </p>
         </div>
         
         <div class="bento-card card-playlist">
-            <p class="card-header">Coding Flow State Playlist</p>
+            <p class="card-header">Study Focus Playlist</p>
             <div class="music-placeholder">
-                [ Placeholder for Embedded YouTube Music Player or Spotify Widget ]
+                [ Placeholder for Embedded Music Player ]
             </div>
             <p class="card-content" style="margin-top: 0.5rem; font-size: 0.9rem;">
-                Currently listening to: Lofi beats to study and relax.
+                Genre: Instrumental and nature soundscapes.
             </p>
         </div>
 
@@ -380,7 +320,21 @@
 
         // Update immediately and then every minute
         updateTime();
+        // Set an interval that runs every 60 seconds (60000 milliseconds)
         setInterval(updateTime, 60000); 
+        
+        // Initial setup for the placeholder time (based on the current execution time)
+        const initialTimeElement = document.querySelector('.location-time');
+        if (initialTimeElement) {
+            // Setting the time based on the execution context time for the first load
+            const now = new Date();
+            const initialTimeString = now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            });
+            initialTimeElement.textContent = initialTimeString;
+        }
     </script>
 
 </body>
