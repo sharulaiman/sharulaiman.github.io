@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Bento Grid | UMT Food Science</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset and Global Styles */
+        :root {
+            /* Scientific/Modern Color Palette */
+            --color-white: #ffffff;
+            --color-light-grey: #f0f4f8; /* Soft background */
+            --color-medium-grey: #e2e8f0; /* Card borders/dividers */
+            --color-dark-grey: #334155; /* Text/primary */
+            --color-accent: #007bff; /* Subtle blue accent (e.g., UMT blue) */
+            --color-text-light: #64748b; /* Secondary text */
+            
+            /* Typography */
+            --font-primary: 'Inter', sans-serif;
+            --font-size-base: 16px;
+            
+            /* Spacing */
+            --spacing-unit: 1rem;
+            --border-radius-base: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background-color: var(--color-light-grey);
+            color: var(--color-dark-grey);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: var(--spacing-unit);
+        }
+
+        /* Container for the Grid */
+        .bento-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            gap: var(--spacing-unit);
+            padding: var(--spacing-unit);
+            
+            /* Base Mobile Layout: Stacked vertically (1 column) */
+            grid-template-columns: 1fr;
+            grid-template-rows: auto;
+        }
+
+        /* Bento Card Styles */
+        .bento-card {
+            background-color: var(--color-white);
+            border-radius: var(--border-radius-base);
+            border: 1px solid var(--color-medium-grey);
+            padding: calc(var(--spacing-unit) * 1.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden; /* Ensures content respects border radius */
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .bento-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Card Content Styling */
+        .card-header {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-unit);
+            color: var(--color-dark-grey);
+        }
+
+        .card-content {
+            font-size: 1rem;
+            color: var(--color-text-light);
+        }
+        
+        .card-content strong {
+            color: var(--color-dark-grey);
+            font-weight: 700;
+        }
+        
+        /* Specific Card Styles */
+        
+        /* Card 1: Profile (Large) */
+        .card-profile {
+            grid-area: profile;
+        }
+        
+        .profile-name {
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+            color: var(--color-accent);
+        }
+
+        .profile-details {
+            font-size: 1.1rem;
+            color: var(--color-dark-grey);
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links a {
+            color: var(--color-dark-grey);
+            text-decoration: none;
+            margin-right: 1rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .social-links a:hover {
+            color: var(--color-accent);
+        }
+
+        /* Card 2: Location (Small) */
+        .card-location {
+            grid-area: location;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .location-time {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-accent);
+        }
+        
+        /* Card 3: Tech Stack (Medium) */
+        .card-tech-stack {
+            grid-area: tech;
+        }
+        
+        .subject-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .subject-list li {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--color-medium-grey);
+            font-weight: 500;
+        }
+        
+        /* Card 4: Case Study (Medium) */
+        .card-case-study {
+            grid-area: case;
+        }
+
+        /* Card 5: Hobby (Small) */
+        .card-hobby {
+            grid-area: hobby;
+            background-color: var(--color-accent);
+            color: var(--color-white);
+            border-color: var(--color-accent);
+        }
+        
+        .card-hobby .card-header, .card-hobby .card-content {
+            color: var(--color-white);
+        }
+        
+        /* Card 6: Playlist (Wide/Bottom) */
+        .card-playlist {
+            grid-area: playlist;
+        }
+        
+        .music-placeholder {
+            height: 80px;
+            background-color: var(--color-light-grey);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--color-text-light);
+            margin-top: 1rem;
+            border: 1px dashed var(--color-medium-grey);
+        }
+
+        /* Desktop Layout (Grid) */
+        @media (min-width: 768px) {
+            .bento-container {
+                /* 4-column layout */
+                grid-template-columns: repeat(4, 1fr);
+                grid-template-rows: auto auto; /* Two main rows for the content above the wide card */
+                
+                /* Defining Grid Areas for Specific Cards (Bento Style) */
+                grid-template-areas:
+                    "profile profile tech case"
+                    "profile profile hobby case"
+                    "playlist playlist playlist playlist";
+            }
+            
+            /* Card Size Definitions */
+            .card-profile {
+                /* Large Box: Takes up 2 columns and 2 rows */
+                grid-column: 1 / span 2;
+                grid-row: 1 / span 2;
+            }
+
+            .card-tech-stack {
+                /* Medium Box: 1 column, 1 row (Top right) */
+                grid-column: 3 / span 1;
+                grid-row: 1 / span 1;
+            }
+            
+            .card-case-study {
+                /* Medium Box: 1 column, 2 rows (Far right) */
+                grid-column: 4 / span 1;
+                grid-row: 1 / span 2;
+            }
+            
+            .card-location {
+                /* Small Box: 1 column, 1 row (Explicitly defined below) */
+                /* The area placement handles the size in this design */
+                grid-column: 3 / span 1;
+                grid-row: 2 / span 1;
+                /* Note: In the area definition above, 'tech' and 'location' occupy the same row 2, col 3 slot.
+                   We need to adjust the areas or explicitly place Card 2.
+                   Let's redefine the areas slightly for simplicity and better control.
+                   
+                   NEW AREA DEFINITION (more common for this layout):
+                   "profile profile tech tech"
+                   "profile profile location hobby"
+                   "playlist playlist playlist playlist"
+                   This gives Card 3 (Tech) medium size and Card 4 (Case Study) medium size.
+                */
+                
+                /* Let's stick to the original plan and use the explicit grid areas */
+                /* Card 2 (Location) will fit in the remaining small slot */
+                grid-area: location; /* Placed in row 2, col 3 */
+            }
+
+            .card-hobby {
+                /* Small Box: 1 column, 1 row */
+                grid-column: 4 / span 1; /* This is wrong based on the area def */
+                grid-area: hobby; /* Placed in row 2, col 4 */
+            }
+            
+            .card-playlist {
+                /* Wide Box: Takes up all 4 columns at the bottom */
+                grid-column: 1 / -1;
+            }
+            
+            /* Re-examining the original simple area definition:
+               "profile profile tech case"
+               "profile profile location hobby" <--- Case study needs to span 2 rows
+               "playlist playlist playlist playlist"
+               
+               Corrected area for Card 4 (Case Study) to span two rows:
+               grid-area: case / span 2;  <-- We use explicit grid props for spanning
+            */
+
+            .card-case-study {
+                 grid-area: case; /* Defined area in the template */
+                 grid-row: 1 / span 2; /* Explicitly spans 2 rows */
+            }
+            
+            /* The simple area template:
+               "profile profile tech case"
+               "profile profile location hobby"
+               "playlist playlist playlist playlist"
+               
+               With the case study span, this is the intended layout.
+            */
+        }
+        
+        @media (min-width: 1024px) {
+            /* Small optimization for larger screens */
+            .profile-name {
+                font-size: 3rem;
+            }
+        }
+
+        /* Utility Class for Accent Text */
+        .accent-text {
+            color: var(--color-accent);
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="bento-container">
+        
+        <div class="bento-card card-profile">
+            <div>
+                <p class="profile-name">AYESHA BINTI AZMAN</p>
+                <p class="profile-details">
+                    <strong class="accent-text">B.Sc. Food Science & Technology</strong> <br>
+                    Year <span class="accent-text">3</span>, Semester 6
+                </p>
+            </div>
+            <div class="social-links">
+                <p class="card-header">Connect</p>
+                <a href="#">LinkedIn</a>
+                <a href="#">GitHub</a>
+                <a href="#">UMT Portal</a>
+            </div>
+        </div>
+        
+        <div class="bento-card card-location">
+            <p class="card-content">
+                <strong>UMT Campus</strong>, Kuala Terengganu
+            </p>
+            <p class="location-time">
+                10:08 AM
+            </p>
+        </div>
+        
+        <div class="bento-card card-tech-stack">
+            <p class="card-header">Current Focus</p>
+            <ul class="subject-list">
+                <li>Food Chemistry ($\text{FKF 3105}$)</li>
+                <li>Food Microbiology ($\text{FMF 3206}$)</li>
+                <li>Sensory Evaluation</li>
+                <li>Statistical Methods</li>
+            </ul>
+        </div>
+        
+        <div class="bento-card card-case-study">
+            <p class="card-header">Latest Research</p>
+            <p class="card-content">
+                <strong>Experiment Title:</strong> <span class="accent-text">Evaluation of Carotenoid Stability in Microalgae Oil During Thermal Processing</span>
+            </p>
+            <p class="card-content" style="margin-top: 1rem;">
+                <strong>Abstract:</strong> Investigating the kinetic degradation of $\beta$-carotene and $\alpha$-carotene in refined oil under high-heat conditions relevant to industrial frying. Preliminary findings suggest a first-order decay model ($C_t = C_0 e^{-kt}$) is applicable.
+            </p>
+            <div style="flex-grow: 1;"></div>
+        </div>
+        
+        <div class="bento-card card-hobby">
+            <p class="card-header">Campus Life</p>
+            <p class="card-content">
+                <strong>Activity:</strong> <span class="accent-text">Volunteering for the 'Ocean Cleanup' Initiative</span>
+            </p>
+            <p class="card-content">
+                Next Session: December 20th.
+            </p>
+        </div>
+        
+        <div class="bento-card card-playlist">
+            <p class="card-header">Coding Flow State Playlist</p>
+            <div class="music-placeholder">
+                [ Placeholder for Embedded YouTube Music Player or Spotify Widget ]
+            </div>
+            <p class="card-content" style="margin-top: 0.5rem; font-size: 0.9rem;">
+                Currently listening to: Lofi beats to study and relax.
+            </p>
+        </div>
+
+    </div>
+    
+    <script>
+        // Simple script to update the time dynamically
+        function updateTime() {
+            const timeElement = document.querySelector('.location-time');
+            if (timeElement) {
+                const now = new Date();
+                // Format the time as HH:MM AM/PM
+                const timeString = now.toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                });
+                timeElement.textContent = timeString;
+            }
+        }
+
+        // Update immediately and then every minute
+        updateTime();
+        setInterval(updateTime, 60000); 
+    </script>
+
+</body>
+</html>
