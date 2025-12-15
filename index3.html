@@ -13,7 +13,7 @@
             --color-light-grey: #f0f4f8; /* Soft background */
             --color-medium-grey: #e2e8f0; /* Card borders/dividers */
             --color-dark-grey: #334155; /* Text/primary */
-            --color-accent: #004d99; /* Deep Ocean Blue (New Accent Color) */
+            --color-accent: #004d99; /* Deep Ocean Blue */
             --color-text-light: #64748b; /* Secondary text */
             
             /* Typography */
@@ -63,12 +63,13 @@
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden; 
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s; 
         }
 
+        /* Subtle Hover Effect (Scale up) */
         .bento-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
 
         /* Card Content Styling */
@@ -89,78 +90,56 @@
             font-weight: 700;
         }
         
-        /* Card 1: Profile (Large) */
+        /* START: Card 1: Profile (Large) - BACKGROUND IMAGE STYLES */
         .card-profile {
             grid-area: profile;
+            
+            /* Core Background Image Properties */
+            background-image: url('bg.jpg');
+            background-size: cover; 
+            background-position: center;
+            background-repeat: no-repeat;
+            
+            /* Text Contrast and Overlay (Essential for readability) */
+            background-blend-mode: multiply; 
+            background-color: rgba(0, 0, 0, 0.4); /* Dark overlay */
+            color: var(--color-white); /* Default text color in this card */
+        }
+
+        /* Text color adjustments for the dark background */
+        .card-profile .profile-name {
+            color: var(--color-white); 
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Shadow for better contrast */
         }
         
-        .profile-name {
-            font-size: 2.5rem;
-            font-weight: 900;
-            line-height: 1;
-            margin-bottom: 0.25rem;
-            color: var(--color-accent);
+        .card-profile .profile-tagline,
+        .card-profile .profile-details,
+        .card-profile .card-header,
+        .card-profile strong,
+        .card-profile a {
+            color: var(--color-white); 
         }
 
-        .profile-tagline {
-            font-size: 1.1rem;
-            color: var(--color-dark-grey);
-            font-style: italic;
-            margin-bottom: 0.5rem;
+        .card-profile .accent-text {
+             /* Brighter accent color for dark background */
+            color: #a8dadc; 
         }
 
-        .profile-details {
-            font-size: 1rem;
-            color: var(--color-dark-grey);
-            margin-bottom: 1.5rem;
+        .card-profile .social-links a:hover {
+            color: #457b9d; /* Subtle hover effect */
         }
+        /* END PROFILE CARD STYLES */
 
-        .social-links a {
-            color: var(--color-dark-grey);
-            text-decoration: none;
-            margin-right: 1rem;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
-        .social-links a:hover {
-            color: var(--color-accent);
-        }
 
         /* Card 2: Location (Small) */
-        .card-location {
-            grid-area: location;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        
         .location-time {
             font-size: 2.5rem;
             font-weight: 700;
             color: var(--color-accent);
         }
         
-        /* Card 3: Tech Stack (Medium) */
-        .card-tech-stack {
-            grid-area: tech;
-        }
-        
-        .subject-list {
-            list-style: none;
-            padding-left: 0;
-        }
-        
-        .subject-list li {
-            margin-bottom: 0.5rem;
-            padding: 0.5rem 0;
-            border-bottom: 1px dashed var(--color-medium-grey);
-            font-weight: 500;
-        }
-        
-        /* Card 5: Hobby (Small) - Using accent color for visual pop */
+        /* Card 5: Hobby (Small) */
         .card-hobby {
-            grid-area: hobby;
             background-color: var(--color-accent);
             color: var(--color-white);
             border-color: var(--color-accent);
@@ -169,57 +148,34 @@
         .card-hobby .card-header, .card-hobby .card-content, .card-hobby strong {
             color: var(--color-white);
         }
-        
-        /* Card 6: Playlist (Wide/Bottom) */
-        .music-placeholder {
-            height: 80px;
-            background-color: var(--color-light-grey);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            color: var(--color-text-light);
-            margin-top: 1rem;
-            border: 1px dashed var(--color-medium-grey);
-        }
 
+        /* Card 6: Playlist (Wide/Bottom) */
+        .spotify-embed {
+            margin-top: 1rem;
+            width: 100%; 
+            min-height: 150px; 
+        }
+        
         /* Desktop Layout (Grid) */
         @media (min-width: 768px) {
             .bento-container {
-                /* 4-column layout */
                 grid-template-columns: repeat(4, 1fr);
-                
-                /* Defining Grid Areas: 
-                   profile (2x2) | tech (1x1) | case (1x2)
-                   profile (2x2) | location (1x1)| hobby (1x1)
-                   playlist (4x1)
-                */
+                grid-template-rows: auto auto auto auto;
                 grid-template-areas:
                     "profile profile tech case"
                     "profile profile location hobby"
+                    "reflection reflection reflection reflection"
                     "playlist playlist playlist playlist";
             }
-            
-            /* Card Size Definitions via Grid Areas/Spanning */
-            .card-profile { grid-area: profile; }
+
+            .card-profile { grid-area: profile; grid-row: 1 / span 2; }
             .card-tech-stack { grid-area: tech; }
+            .card-case-study { grid-area: case; }
             .card-location { grid-area: location; }
             .card-hobby { grid-area: hobby; }
+            .card-reflection { grid-area: reflection; }
             .card-playlist { grid-area: playlist; }
             
-            .card-case-study {
-                 grid-area: case; 
-                 /* Explicitly spans 2 rows based on the area layout */
-                 grid-row: 1 / span 2; 
-            }
-        }
-        
-        @media (min-width: 1024px) {
-            /* Small optimization for larger screens */
-            .profile-name {
-                font-size: 3rem;
-            }
         }
 
         /* Utility Class for Accent Text */
@@ -244,19 +200,10 @@
             </div>
             <div class="social-links">
                 <p class="card-header">Connect</p>
-                <a href="#">LinkedIn</a>
-                <a href="#">GitHub</a>
-                <a href="#">UMT Portal</a>
+                <a href="#" target="_blank">LinkedIn</a>
+                <a href="#" target="_blank">GitHub</a>
+                <a href="#" target="_blank">UMT Portal</a>
             </div>
-        </div>
-        
-        <div class="bento-card card-location">
-            <p class="card-content">
-                <strong>UMT</strong>, Kuala Nerus
-            </p>
-            <p class="location-time">
-                10:44 AM
-            </p>
         </div>
         
         <div class="bento-card card-tech-stack">
@@ -268,16 +215,24 @@
                 <li>Lab Analysis Techniques</li>
             </ul>
         </div>
-        
+
         <div class="bento-card card-case-study">
             <p class="card-header">Latest Lab Work</p>
             <p class="card-content">
                 <strong>Experiment Title:</strong> <span class="accent-text">Starch Gelatinization in Local Kuih</span>
             </p>
             <p class="card-content" style="margin-top: 1rem;">
-                <strong>Description:</strong> Analyzing texture profiles of *Kuih Lapis* samples prepared with different starch ratios to optimize chewiness and structural integrity. Focus on the rheological properties post-gelatinization.
+                <strong>Description:</strong> Analyzing texture profiles of *Kuih Lapis* samples prepared with different starch ratios.
             </p>
-            <div style="flex-grow: 1;"></div>
+        </div>
+        
+        <div class="bento-card card-location">
+            <p class="card-content">
+                <strong>UMT</strong>, Kuala Nerus
+            </p>
+            <p class="location-time">
+                12:52 PM
+            </p>
         </div>
         
         <div class="bento-card card-hobby">
@@ -289,11 +244,27 @@
                 (A must for ocean inspiration!)
             </p>
         </div>
+
+        <div class="bento-card card-reflection">
+            <p class="card-header accent-text">Why Food Tech Matters in Malaysia</p>
+            <p class="card-content">
+                Sustainable food security is crucial for our future. By optimizing local processing methods, we can reduce waste and improve nutrition. This discipline is key to national resilience.
+            </p>
+        </div>
         
         <div class="bento-card card-playlist">
             <p class="card-header">Study Focus Playlist</p>
-            <div class="music-placeholder">
-                [ Placeholder for Embedded Music Player ]
+            
+            <div class="spotify-embed">
+                <iframe data-testid="embed-iframe" style="border-radius:12px" 
+                        src="https://open.spotify.com/embed/track/0X2bh8NVQ8svDQIn2AdCbW?utm_source=generator" 
+                        width="100%" 
+                        height="352" 
+                        frameBorder="0" 
+                        allowfullscreen="" 
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                        loading="lazy">
+                </iframe>
             </div>
             <p class="card-content" style="margin-top: 0.5rem; font-size: 0.9rem;">
                 Genre: Instrumental and nature soundscapes.
@@ -320,21 +291,7 @@
 
         // Update immediately and then every minute
         updateTime();
-        // Set an interval that runs every 60 seconds (60000 milliseconds)
         setInterval(updateTime, 60000); 
-        
-        // Initial setup for the placeholder time (based on the current execution time)
-        const initialTimeElement = document.querySelector('.location-time');
-        if (initialTimeElement) {
-            // Setting the time based on the execution context time for the first load
-            const now = new Date();
-            const initialTimeString = now.toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true
-            });
-            initialTimeElement.textContent = initialTimeString;
-        }
     </script>
 
 </body>
